@@ -5,18 +5,31 @@ MAINTAINER Greg Fausak <greg@tacodata.com>
 # a simple postgres instance
 
 RUN apt-get update
-RUN apt-get install -y wget ca-certificates
-
-# postgres PGP key
-RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-
-# postgres current repo
-RUN /bin/echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-
-RUN apt-get update
+RUN apt-get install -y wget ca-certificates libreadline-dev zlib1g-dev
 RUN apt-get upgrade
 
-RUN apt-get install -y postgresql-9.4 postgresql-client-9.4 postgresql-contrib-9.4
+RUN groupadd -g 600 postgres
+RUN useradd postgres -m -g 600 -s /bin/bash -u 600
+
+USER postgres
+RUN mkdir /home/postgres/src
+WORKDIR /home/postgres/src
+
+RUN wget https://ftp.postgresql.org/pub/source/v9.4.0/postgresql-9.4.0.tar.gz
+RUN tar xzf postgresql-9.4.0.tar.gz
+WORKDIR /home/postgres/src/postgresql-9.4.0
+RUN ./configure
+RUN make
+
+USER root
+WORKDIR /home/postgres/src/postgresql-9.4.0
+RUN make install
+
+RUN mkdir -p /var/local/pgsql/data
+RUN chown -R postgres:postgres /var/local/pgsql
+RUN echo 'PGDATA=/var/local/pgsql/data; export PGDATA' > /etc/profile.d/postgres_path.sh
+RUN echo 'PATH=/usr/local/pgsql/bin:$PATH' >> /etc/profile.d/postgres_path.sh
+
+WORKDIR /root
 
 CMD [ '/bin/bash' ]
-
