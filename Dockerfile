@@ -16,7 +16,7 @@ USER postgres
 RUN mkdir /home/postgres/src
 WORKDIR /home/postgres/src
 
-RUN wget https://ftp.postgresql.org/pub/source/v9.4.0/postgresql-9.4.0.tar.gz &&\
+RUN wget -q https://ftp.postgresql.org/pub/source/v9.4.0/postgresql-9.4.0.tar.gz &&\
 	tar xzf postgresql-9.4.0.tar.gz
 
 WORKDIR /home/postgres/src/postgresql-9.4.0
