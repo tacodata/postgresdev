@@ -10,7 +10,8 @@ RUN apt-get update &&\
 	apt-get upgrade
 
 RUN groupadd -g 600 postgres &&\
-	useradd postgres -m -g 600 -s /bin/bash -u 600
+	useradd postgres -m -g 600 -s /bin/bash -u 600 &&\
+	/bin/echo 'set editing-mode vi' > /home/postgres/.inputrc
 
 USER postgres
 RUN mkdir /home/postgres/src
