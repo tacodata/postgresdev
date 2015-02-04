@@ -39,9 +39,9 @@ WORKDIR /home/postgres
 
 # this creates a database called db which is the default database if none is mounted.
 RUN /usr/local/pgsql/bin/initdb -D /var/local/pgsql/data
-RUN pg_ctl -w -D /var/local/pgsql/data start &&\
-	createdb db &&\
-	pg_ctl -w -D /var/local/pgsql/data stop
+RUN /usr/local/pgsql/bin/pg_ctl -w -D /var/local/pgsql/data start &&\
+	/usr/local/pgsql/bin/createdb db &&\
+	/usr/local/pgsql/bin/pg_ctl -w -D /var/local/pgsql/data stop
 
 USER root
 WORKDIR /root
