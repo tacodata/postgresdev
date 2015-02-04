@@ -5,9 +5,9 @@ MAINTAINER Greg Fausak <greg@tacodata.com>
 # a simple postgres build
 # postgres 9.4.0
 
-RUN apt-get update &&\
+RUN apt-get -y update &&\
 	apt-get install -y wget ca-certificates libreadline-dev zlib1g-dev &&\
-	apt-get upgrade
+	apt-get -y upgrade
 
 RUN groupadd -g 600 postgres &&\
 	useradd postgres -m -g 600 -s /bin/bash -u 600 &&\
