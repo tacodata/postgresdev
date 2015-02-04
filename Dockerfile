@@ -38,8 +38,7 @@ USER postgres
 WORKDIR /home/postgres
 
 # this creates a database called db which is the default database if none is mounted.
-ENV PATH=/usr/local/pgsql/bin:$PATH
-ENV PGDATA=/var/local/pgsql/data
+ENV PATH=/usr/local/pgsql/bin:$PATH PGDATA=/var/local/pgsql/data
 RUN initdb
 RUN pg_ctl -w -D /var/local/pgsql/data start &&\
 	createdb db &&\
